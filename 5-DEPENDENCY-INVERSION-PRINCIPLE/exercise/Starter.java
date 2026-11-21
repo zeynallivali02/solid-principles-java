@@ -2,6 +2,19 @@
 // MySQLDatabase, so swapping storage (or testing without a real DB) means
 // editing OrderProcessor itself. See README.md in this folder for the full
 // task and requirements.
+import java.util.ArrayList;
+import java.util.List;
+
+interface OrderRepository {
+    void save(String order);
+}
+
+class MySQLOrderRepository implements OrderRepository{
+    @Override
+    public void save(String order){
+        System.out.println("Saving order to MySQL: " + order);
+    }
+}
 
 class MySQLDatabase {
     public void save(String order) {
@@ -9,21 +22,57 @@ class MySQLDatabase {
     }
 }
 
-class OrderProcessor {
-    private MySQLDatabase database = new MySQLDatabase();
-
-    public void process(String order) {
-        System.out.println("Processing order: " + order);
-        database.save(order);
+class MongoOrderRepository implements OrderRepository {
+    @Override
+    public void save(String order){
+        System.out.println("Saving order to MongoDB:" + order);
     }
 }
 
-public class Starter {
-    public static void main(String[] args) {
-        OrderProcessor processor = new OrderProcessor();
-        processor.process("Order #1001");
+class InMemoryOrderRepository implements OrderRepository {
+    private List<String> orders = new ArrayList<>();
 
-        // The team wants to switch to MongoDB in production, and use an
-        // in-memory fake in tests — without ever touching OrderProcessor.
+    @Override
+    public void save(String order){
+        orders.add(order);
     }
+
+    public List<String> getOrders(){
+        return orders;
+    }
+}
+
+class OrderProcessor {
+   private OrderRepository repository;
+
+   OrderProcessor (OrderRepository repository){
+    this.repository = repository;
+   }
+
+   public void process(String order) {
+    System.out.println("Processing order: " + order);
+    repository.save(order);
+   }
+    
+}
+
+public class Starter {
+   public static void main(String[] args) {
+
+    InMemoryOrderRepository memory = new InMemoryOrderRepository();
+
+    OrderProcessor processor = new OrderProcessor(memory);
+
+    processor.process(1001);
+
+    System.out.println(memory.getOrders());
+
+    // İndi MySQL ilə ikinci sifarişi emal et
+
+    MySQLDatabase processor1 = new MySQLDatabase(memory);
+
+    processor1.process(2002);
+    System.out.println(memory.getOrders());
+
+}
 }

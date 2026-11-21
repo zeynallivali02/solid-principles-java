@@ -2,30 +2,56 @@
 // leave and health insurance. Split Employee into focused interfaces instead.
 // See README.md in this folder for the full task and requirements.
 
-interface Employee {
+interface Payable {
     double calculateSalary();
+}
+
+interface PaidLeaveEligible  {
     void takePaidLeave(int days);
+}
+
+interface InsuranceEligible  {
     void enrollInHealthInsurance();
 }
 
-class Contractor implements Employee {
+class Contractor implements Payable {
     public double calculateSalary() {
         return 5000.0; // flat contract rate
     }
+}
 
-    public void takePaidLeave(int days) {
-        throw new UnsupportedOperationException("Contractors don't get paid leave");
+class FullTimeEmployee implements Payable, PaidLeaveEligible, InsuranceEligible {
+    @Override
+    public double calculateSalary(){
+        return 5000.00;
     }
 
-    public void enrollInHealthInsurance() {
-        throw new UnsupportedOperationException("Contractors aren't eligible for company insurance");
+    @Override
+    public void takePaidLeave(int days){
+        System.out.println("Paid leave: " + days + " days ");
     }
+
+    @Override
+    public void enrollInHealthInsurance(){
+        System.out.println("Enrolled in health insurance");
+    }
+
+    
 }
 
 public class Starter {
+    static void runPayroll(Payable worker){
+        System.out.println(worker.calculateSalary());
+    }
     public static void main(String[] args) {
-        Employee contractor = new Contractor();
-        System.out.println("Salary: " + contractor.calculateSalary());
-        contractor.takePaidLeave(2); // 💥 throws at runtime
+        Payable contractor = new Contractor();
+        FullTimeEmployee employee = new FullTimeEmployee();
+       
+        runPayroll(contractor);
+        runPayroll(employee);
+
+        employee.takePaidLeave(2);
+        employee.enrollInHealthInsurance();
+        
     }
 }

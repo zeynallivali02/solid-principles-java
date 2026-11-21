@@ -6,38 +6,40 @@ class Rectangle {
     protected int width;
     protected int height;
 
-    public void setWidth(int width) {
-        this.width = width;
+   public Rectangle(int w, int h) {
+    this.width = w;
+    this.height = h;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
+    @Override
     public int getArea() {
         return width * height;
     }
 }
 
-class Square extends Rectangle {
-    @Override
-    public void setWidth(int width) {
-        this.width = width;
-        this.height = width; // forces height to match width
+class Square implements Shape {
+    private int side;
+
+    public Square(int s) {
+    this.side = s;
     }
 
+
     @Override
-    public void setHeight(int height) {
-        this.width = height;
-        this.height = height;
+    public int getArea(){
+        return side * side;
     }
 }
 
 public class Starter {
     public static void main(String[] args) {
-        Rectangle rect = new Square();
-        rect.setWidth(5);
-        rect.setHeight(10);
+        Rectangle rect = new Rectangle(5,10);
+        Square square = new Square(15);
+
+
+       
+
+
 
         // A caller of Rectangle expects independent width/height -> area 50.
         // A Square can't honor that -> area is actually 100.

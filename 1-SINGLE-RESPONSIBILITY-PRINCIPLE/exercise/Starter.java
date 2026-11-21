@@ -1,6 +1,8 @@
 // SRP Practice Exercise — starter code. Refactor this so each responsibility
 // (data, calculation, printing, saving, emailing) lives in its own class.
 // See README.md in this folder for the full task and requirements.
+//
+//
 
 class Invoice {
     private String customerName;
@@ -11,6 +13,9 @@ class Invoice {
         this.itemPrices = itemPrices;
     }
 
+    
+}
+    class calculateTotal {
     public double calculateTotal() {
         double total = 0;
         for (double price : itemPrices) {
@@ -18,7 +23,9 @@ class Invoice {
         }
         return total;
     }
+}  
 
+    class printInvoice {
     public void printInvoice() {
         System.out.println("Invoice for: " + customerName);
         for (double price : itemPrices) {
@@ -26,14 +33,18 @@ class Invoice {
         }
         System.out.println("Total: $" + calculateTotal());
     }
+}
 
+    class saveToFile {
     public void saveToFile(String filename) {
         System.out.println("Saving invoice to " + filename);
     }
-
+}
+    class emailInvoice {
     public void emailInvoice(String emailAddress) {
         System.out.println("Emailing invoice to " + emailAddress);
     }
+
 }
 
 public class Starter {

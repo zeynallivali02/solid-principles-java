@@ -2,6 +2,7 @@
 // It has three reasons to change: a new validation rule, a new database,
 // or a new email provider all force an edit to this same class.
 
+
 class UserService {
 
     public void createUser(String email) {
